@@ -91,11 +91,11 @@ public class Timer extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long seconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                Log.i(TAG, seconds + String.format(" %s have elapsed.", units));
+                Log.i(TAG, seconds/ unitSeconds + String.format(" %s have elapsed.", units));
                 Log.i(TAG, "Mod: " + (seconds % (duration * unitSeconds)));
                 if (seconds != 0 && seconds % (duration * unitSeconds) == 0) {
                     Toast.makeText(getApplicationContext(),
-                            String.format("%s %s Have Elapsed", seconds, units),
+                            String.format("%s %s Have Elapsed", seconds/ unitSeconds, units),
                             Toast.LENGTH_SHORT).show();
                 }
             }
