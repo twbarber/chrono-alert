@@ -20,15 +20,30 @@
         android:textSize="100sp"
         android:layout_marginTop="68dp" />
 
-    <EditText
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:id="@+id/second_counter"
-        android:hint="@string/number_of_seconds"
-        android:paddingBottom="20dp"/>
+        android:layout_gravity="center">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:id="@+id/second_counter"
+            android:hint="Number"
+            android:paddingBottom="20dp"/>
+
+        <Spinner
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

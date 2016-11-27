@@ -4,4 +4,9 @@
     <string name="stop">Stop</string>
     <string name="number_of_seconds">Number Of Seconds</string>
     <string name="reset">Reset</string>
+    <string-array name="untis_array">
+        <item>Seconds</item>
+        <item>Minutes</item>
+    </string-array>
+
 </resources>

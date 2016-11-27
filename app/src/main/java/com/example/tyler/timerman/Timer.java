@@ -4,23 +4,31 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Timer extends AppCompatActivity {
 
     private static final String TAG = "Timer";
+    private static final String SECONDS = "Seconds";
+    private static final String MINUTES = "Minutes";
 
     private Chronometer chronometer;
     private TextView durationEntry;
     private Button startButton;
     private Button stopButton;
     private Button resetButton;
+    private Spinner unitSpinner;
 
     private boolean started = false;
+    private String units;
+    private long unitSeconds;
     private long stopTime;
     private long duration;
 
@@ -46,6 +54,16 @@ public class Timer extends AppCompatActivity {
         this.startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                units = unitSpinner.getSelectedItem().toString();
+                Log.i(TAG, "Units: " + units);
+                switch (units) {
+                    case SECONDS:
+                        unitSeconds = 1;
+                        break;
+                    case MINUTES:
+                        unitSeconds = 60;
+                        break;
+                }
                 duration = Long.parseLong(durationEntry.getText().toString());
                 if(!started) {
                     chronometer.setBase(getBaseTime());
@@ -73,14 +91,21 @@ public class Timer extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long seconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                Log.i(TAG, seconds + " seconds have elapsed.");
-                if (seconds != 0 && seconds % duration == 0) {
+                Log.i(TAG, seconds + String.format(" %s have elapsed.", units));
+                Log.i(TAG, "Mod: " + (seconds % (duration * unitSeconds)));
+                if (seconds != 0 && seconds % (duration * unitSeconds) == 0) {
                     Toast.makeText(getApplicationContext(),
-                            String.format("%s Seconds Have Elapsed", seconds),
+                            String.format("%s %s Have Elapsed", seconds, units),
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        this.unitSpinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.untis_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.unitSpinner.setAdapter(adapter);
 
     }
 
@@ -88,5 +113,6 @@ public class Timer extends AppCompatActivity {
         long baseTime = SystemClock.elapsedRealtime();
         return stopTime == 0 ? baseTime : baseTime - stopTime + chronometer.getBase();
     }
+
 
 }
