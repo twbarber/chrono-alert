@@ -18,6 +18,7 @@ public class Timer extends AppCompatActivity {
     private TextView durationEntry;
     private Button startButton;
     private Button stopButton;
+    private Button resetButton;
 
     private boolean started = false;
     private long stopTime;
@@ -30,18 +31,24 @@ public class Timer extends AppCompatActivity {
 
         this.durationEntry = (TextView) this.findViewById(R.id.second_counter);
 
+        this.resetButton = (Button) this.findViewById(R.id.reset);
+        this.resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chronometer.stop();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                stopTime = 0;
+                started = false;
+            }
+        });
+
         this.startButton = (Button) findViewById(R.id.start);
         this.startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 duration = Long.parseLong(durationEntry.getText().toString());
                 if(!started) {
-                    if(stopTime == 0) {
-                        chronometer.setBase(SystemClock.elapsedRealtime());
-                    } else {
-                        chronometer.setBase(
-                                SystemClock.elapsedRealtime() - stopTime + chronometer.getBase());
-                    }
+                    chronometer.setBase(getBaseTime());
                     chronometer.start();
                     started = true;
                 }
@@ -75,6 +82,11 @@ public class Timer extends AppCompatActivity {
             }
         });
 
+    }
+
+    private long getBaseTime() {
+        long baseTime = SystemClock.elapsedRealtime();
+        return stopTime == 0 ? baseTime : baseTime - stopTime + chronometer.getBase();
     }
 
 }
